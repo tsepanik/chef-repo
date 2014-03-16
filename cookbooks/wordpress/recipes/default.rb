@@ -7,8 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
-remote_file "/tmp/wordpress-3.8.1.tar.gz" do 
-	source "wordpress-3.8.1.tar.gz"
+remote_file "#{Chef::Config[:file_cache_path]}/wordpress-3.8.1.tar.gz" do 
+	source "http://wordpress.org/wordpress-3.8.1.tar.gz"
 	mode "0644"
 end
 
@@ -21,7 +21,7 @@ end
 
 execute "expand-wordpress" do
 	cwd "/var/www/wordpress"
-	command "tar -xzf /tmp/wordpress-3.8.1.tar.gz"
+	command "tar -xzf #{Chef::Config[:file_cache_path]}/wordpress-3.8.1.tar.gz"
 	creates "/var/www/wordpress/wp-settings.php"
 end
 
@@ -51,7 +51,7 @@ template "/etc/mysql/grants.sql" do
     notifies :run, resources(:execute => "mysql-install-privileges"), :immediately
 end
 
-template "/var/www/wp-config.php" do
+template "/var/www//wordpress/wp-config.php" do
     source "wp-config.php.erb"
     owner "root"
     group "root"
@@ -65,7 +65,7 @@ end
 
 web_app "wordpress" do
     template "wordpress.conf.erb"
-    docroot "/var/www"
-    server_name( node.fqdn )
+    docroot "/var/www/wordpress"
+    server_name server_fqdn
     server_aliases node.fqdn
 end
