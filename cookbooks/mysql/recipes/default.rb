@@ -32,7 +32,3 @@ template "/etc/mysql/my.cnf" do
 	mode "0644"
 	notifies :restart, resources(:service => "mysql"), :immediately
 end
-
-service "mysql" do
-	action :restart
-end
