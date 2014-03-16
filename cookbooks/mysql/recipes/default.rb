@@ -7,15 +7,15 @@
 # All rights reserved - Do Not Redistribute
 #
 
-package "mysql-server" do
-	action :install
-end
-
 package "libapache2-mod-auth-mysql" do
 	action :install
 end
 
 package "php5-mysql" do
+	action :install
+end
+
+package "mysql-server" do
 	action :install
 end
 
@@ -34,5 +34,5 @@ template "/etc/mysql/my.cnf" do
 end
 
 service "mysql" do
-	action :start
+	action :restart
 end
