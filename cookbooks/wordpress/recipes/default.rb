@@ -20,7 +20,7 @@ directory "/var/www/wordpress" do
 end
 
 execute "untar-wordpress" do
-	cwd "/var/www/wordpress"
+	cwd "/var/www/"
 	command "tar -xzf #{Chef::Config[:file_cache_path]}/wordpress-3.8.1.tar.gz"
 	creates "/var/www/wordpress/wp-settings.php"
 end
@@ -48,7 +48,7 @@ template "/etc/mysql/grants.sql" do
 end
 
 execute "create wordpressdb database" do
-    command "/usr/bin/mysqladmin -u root create wordpressdb"
+    command "/usr/bin/mysqladmin -u root -p "" create wordpressdb"
     not_if do
       m = Mysql.new("localhost", "root", "")
       m.list_dbs.include?("wordpressdb")
