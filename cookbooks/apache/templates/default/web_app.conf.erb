@@ -1,6 +1,5 @@
 <VirtualHost *:80>
   ServerName <%= @params[:server_name] %>
-  ServerAlias <% @params[:server_aliases].each do |a| %><%= "#{a}" %> <% end %>
   DocumentRoot <%= @params[:docroot] %>
   RewriteEngine On
   
@@ -25,11 +24,11 @@
   </Location>
 
   LogLevel info
-  ErrorLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-error.log
-  CustomLog <%= @node[:apache][:log_dir] %>/<%= @params[:name] %>-access.log combined
+  ErrorLog /var/log/apache2/<%= @params[:name] %>-error.log
+  CustomLog /var/log/apache2/<%= @params[:name] %>-access.log combined
 
   RewriteEngine On
-  RewriteLog <%= @node[:apache][:log_dir] %>/<%= @application_name %>-rewrite.log
+  RewriteLog /var/log/apache2/<%= @application_name %>-rewrite.log
   RewriteLogLevel 0
 
   # Canonical host, <%= @params[:server_name] %>

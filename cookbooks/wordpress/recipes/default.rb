@@ -30,7 +30,7 @@ execute "mysql-install-privileges" do
     action :nothing
 end
 
-include_recipe "mysql::server"
+include_recipe "mysql::default"
 Gem.clear_paths
 require 'mysql'
 
@@ -48,14 +48,14 @@ template "/etc/mysql/grants.sql" do
 end
 
 execute "create wordpressdb database" do
-    command "/usr/bin/mysqladmin -u root -p #{node[:mysql][:server_root_password]} create wordpressdb"
+    command "/usr/bin/mysqladmin -u root create wordpressdb"
     not_if do
-      m = Mysql.new("localhost", "root", @node[:mysql][:server_root_password])
-      m.list_dbs.include?(wordpressdb)
+      m = Mysql.new("localhost", "root", "")
+      m.list_dbs.include?("wordpressdb")
     end
 end
 
-template "/var/www//wordpress/wp-config.php" do
+template "/var/www/wordpress/wp-config.php" do
     source "wp-config.php.erb"
     owner "root"
     group "root"
