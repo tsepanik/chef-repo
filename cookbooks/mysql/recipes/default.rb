@@ -7,6 +7,8 @@
 # All rights reserved - Do Not Redistribute
 #
 
+include_recpie "mysql::client"
+
 package "libapache2-mod-auth-mysql" do
 	action :install
 end
