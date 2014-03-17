@@ -19,18 +19,10 @@ directory "/var/www/wordpress" do
 	action :create
 end
 
-execute "expand-wordpress" do
+execute "untar-wordpress" do
 	cwd "/var/www/wordpress"
 	command "tar -xzf #{Chef::Config[:file_cache_path]}/wordpress-3.8.1.tar.gz"
 	creates "/var/www/wordpress/wp-settings.php"
-end
-
-execute "create wordpressdb database" do
-    command "/usr/bin/mysqladmin -u root -p#{node[:mysql][:server_root_password]} create wordpressdb"
-    not_if do
-      m = Mysql.new("localhost", "root", @node[:mysql][:server_root_password])
-      m.list_dbs.include?(wordpressdb)
-    end
 end
 
 execute "mysql-install-privileges" do
@@ -49,6 +41,14 @@ template "/etc/mysql/grants.sql" do
       :database => "wordpressdb"
     )
     notifies :run, resources(:execute => "mysql-install-privileges"), :immediately
+end
+
+execute "create wordpressdb database" do
+    command "/usr/bin/mysqladmin -u root -p #{node[:mysql][:server_root_password]} create wordpressdb"
+    not_if do
+      m = Mysql.new("localhost", "root", @node[:mysql][:server_root_password])
+      m.list_dbs.include?(wordpressdb)
+    end
 end
 
 template "/var/www//wordpress/wp-config.php" do
