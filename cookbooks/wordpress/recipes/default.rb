@@ -26,7 +26,7 @@ execute "expand-wordpress" do
 end
 
 execute "create wordpressdb database" do
-    command "/usr/bin/mysqladmin -u root -p#{node[:mysql][:server_root_password]} create wordpressdb"
+    command "/usr/bin/mysqladmin -u root -p '' create wordpressdb"
     not_if do
       m = Mysql.new("localhost", "root", "")
       m.list_dbs.include?(wordpressdb)
