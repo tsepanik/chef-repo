@@ -26,15 +26,15 @@ execute "expand-wordpress" do
 end
 
 execute "create wordpressdb database" do
-    command "/usr/bin/mysqladmin -u root -p '' create wordpressdb"
-    not_if do
-      m = Mysql.new("localhost", "root", "")
-      m.list_dbs.include?(wordpressdb)
-    end
+    command "/usr/bin/mysqladmin -u root -p "rootpass" create wordpressdb"
+    # not_if do
+    #   m = Mysql.new("localhost", "root", "wordpress")
+    #   m.list_dbs.include?(wordpressdb)
+    # end
 end
 
 execute "mysql-install-privileges" do
-    command "/usr/bin/mysql -u root -p "" < /etc/mysql/grants.sql"
+    command "/usr/bin/mysql -u root -p "rootpass" < /etc/mysql/grants.sql"
     action :nothing
 end
 
