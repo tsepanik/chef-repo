@@ -16,11 +16,3 @@ end
 service "apache2" do
 	action [ :enable, :start ]
 end
-
-apache_module "rewrite"
-
-apache_module "deflate" do
-  conf true
-end
-
-apache_module "headers"
