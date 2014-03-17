@@ -25,14 +25,22 @@ execute "untar-wordpress" do
 	creates "/var/www/wordpress/wp-settings.php"
 end
 
-execute "mysql-install-privileges" do
-    command "/usr/bin/mysql -u root -p 'rootpass' < /etc/mysql/grants.sql"
-    action :nothing
-end
-
 include_recipe "mysql::default"
 Gem.clear_paths
 require 'mysql'
+
+execute "create wordpressdb database" do
+    command "/usr/bin/mysqladmin --user=root --password=rootpass create wordpressdb"
+    not_if do
+      m = Mysql.new("localhost", "root", "rootpass")
+      m.list_dbs.include?("wordpressdb")
+    end
+end
+
+execute "mysql-install-privileges" do
+    command "/usr/bin/mysql --user=root --password=rootpass < /etc/mysql/grants.sql"
+    action :nothing
+end
 
 template "/etc/mysql/grants.sql" do
     source "grants.sql.erb"
@@ -47,12 +55,8 @@ template "/etc/mysql/grants.sql" do
     notifies :run, resources(:execute => "mysql-install-privileges"), :immediately
 end
 
-execute "create wordpressdb database" do
-    command "/usr/bin/mysqladmin -u root -p "" create wordpressdb"
-    not_if do
-      m = Mysql.new("localhost", "root", "")
-      m.list_dbs.include?("wordpressdb")
-    end
+service "mysql" do
+  action :restart
 end
 
 template "/var/www/wordpress/wp-config.php" do

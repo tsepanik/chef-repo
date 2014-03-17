@@ -29,14 +29,6 @@ include_recipe "mysql::client"
     notifies :run, resources(:execute => "preseed mysql-server"), :immediately
   end
 
-package "libapache2-mod-auth-mysql" do
-	action :install
-end
-
-package "php5-mysql" do
-	action :install
-end
-
 package "mysql-server" do
 	action :install
 end
@@ -45,6 +37,14 @@ service "mysql" do
 	service_name "mysql"
 	supports :status => true, :restart => true, :reload => true
 	action :enable
+end
+
+package "libapache2-mod-auth-mysql" do
+	action :install
+end
+
+package "php5-mysql" do
+	action :install
 end
 
 service "mysql" do
