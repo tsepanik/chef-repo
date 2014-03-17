@@ -30,6 +30,10 @@ execute "mysql-install-privileges" do
     action :nothing
 end
 
+include_recipe "mysql::server"
+Gem.clear_paths
+require 'mysql'
+
 template "/etc/mysql/grants.sql" do
     source "grants.sql.erb"
     owner "root"
@@ -62,8 +66,6 @@ template "/var/www//wordpress/wp-config.php" do
       :password        => "wordpress"
     )
 end
-
-#include_recipe "apache::web_app"
 
 web_app "wordpress" do
     template "wordpress.conf.erb"
