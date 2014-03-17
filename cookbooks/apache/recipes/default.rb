@@ -17,8 +17,10 @@ service "apache2" do
 	action [ :enable, :start ]
 end
 
-#create basic display
-# cookbook_file "/var/www/index.html" do
-# 	source "index.html"
-# 	mode "0644"
-# end
+apache_module "rewrite"
+
+apache_module "deflate" do
+  conf true
+end
+
+apache_module "headers"
