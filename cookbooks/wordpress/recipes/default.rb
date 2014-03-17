@@ -63,6 +63,8 @@ template "/var/www//wordpress/wp-config.php" do
     )
 end
 
+include_recipe "apache::web_app"
+
 web_app "wordpress" do
     template "wordpress.conf.erb"
     docroot "/var/www/wordpress"
