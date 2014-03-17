@@ -27,14 +27,9 @@ end
 
 include_recipe "mysql::default"
 Gem.clear_paths
-require 'mysql'
 
 execute "create wordpressdb database" do
     command "/usr/bin/mysqladmin --user=root --password=rootpass create wordpressdb"
-    not_if do
-      m = Mysql.new("localhost", "root", "rootpass")
-      m.list_dbs.include?("wordpressdb")
-    end
 end
 
 execute "mysql-install-privileges" do
