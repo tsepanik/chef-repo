@@ -11,22 +11,9 @@ package "php5" do
 	action :install
 end
 
-package "libapache2-mod-php5" do
-	action :install
-end
-
-package "php5-mcrypt" do
-	action :install
-end
-
-package "php5-mysql" do
-	action :install
-end
-
-cookbook_file "/var/www/index.php" do
-	source "index.php"
-	mode "0644"
-end
+include_recipe "php::libapache2-mod-php5.rb"
+include_recipe "php5-mcrypt"
+include_recipe "php5-mysql"
 
 service "apache2" do
 	action :restart
