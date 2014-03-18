@@ -5,6 +5,9 @@ Vagrant.configure("2") do |config|
   config.vm.network :private_network, ip: "192.168.42.10"
   config.vm.hostname = "chefbox.vm"
 
+
+# vagrant-omnibus plugin required to install chef
+# run vagrant plugin install vagrant-omnibus on host to install
 config.omnibus.chef_version = :latest
 
  config.vm.provision :chef_solo do |chef|
