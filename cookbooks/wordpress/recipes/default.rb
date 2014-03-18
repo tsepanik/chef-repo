@@ -26,7 +26,6 @@ execute "untar-wordpress" do
 end
 
 include_recipe "mysql::default"
-Gem.clear_paths
 
 execute "create wordpressdb database" do
     command "/usr/bin/mysqladmin --user=root --password=rootpass create wordpressdb"
