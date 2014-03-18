@@ -43,9 +43,7 @@ package "libapache2-mod-auth-mysql" do
 	action :install
 end
 
-package "php5-mysql" do
-	action :install
-end
+include_recipe "php::php5-mysql"
 
 service "mysql" do
 	action :restart

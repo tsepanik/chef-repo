@@ -12,8 +12,8 @@ package "php5" do
 end
 
 include_recipe "php::libapache2-mod-php5.rb"
-include_recipe "php5-mcrypt"
-include_recipe "php5-mysql"
+include_recipe "php::php5-mcrypt"
+include_recipe "php::php5-mysql"
 
 service "apache2" do
 	action :restart
