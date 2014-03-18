@@ -11,7 +11,7 @@ package "php5" do
 	action :install
 end
 
-include_recipe "php::libapache2-mod-php5.rb"
+include_recipe "php::libapache2-mod-php5"
 include_recipe "php::php5-mcrypt"
 include_recipe "php::php5-mysql"
 
